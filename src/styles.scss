@@ -2,12 +2,18 @@
 html {
     color: white;
     font-family: Roboto, Arial, Helvetica, sans-serif;
+    height: 100%;
+    margin: 0;
+
+}
+
+.container {
+    display: flex;
+    height: 100vh;
 }
 
 .team-container {
-    width: 50%;
-    height: 98vh;
-    display: inline-block;
+    flex: 1;
 }
 .inner-team-container {
     width: 90%;
