@@ -1,0 +1,25 @@
+{
+    "initialScore": 750,
+    "leftTeam" : {
+        "teamName": "Grandad",
+        "points": 1,
+      "scores": [
+        { "answer": 1, "score": 182, "pass": false, "answerText": "Australia" },
+        { "answer": 2, "score": 213, "pass": false, "answerText": "Germany" },
+        { "answer": 3, "score": 239, "pass": false, "answerText": "France" },
+        { "answer": 4, "score": 28, "pass": false, "answerText": "South Africa" },
+        { "answer": 5, "score": 109, "pass": false, "answerText": "South Korea" }
+      ]
+    },
+    "rightTeam" : {
+        "teamName": "Grandma",
+        "points": 2,
+      "scores": [
+        { "answer": 1, "score": 80, "pass": false, "answerText": "Canada" },
+        { "answer": 2, "score": 27, "pass": false, "answerText": "Jamaica" },
+        { "answer": 3, "score": 303, "pass": false, "answerText": "China" },
+        { "answer": 4, "score": 147, "pass": false, "answerText": "Russia" },
+        { "answer": 5, "score": 10, "pass": false, "answerText": "India" }
+      ]
+    }
+}

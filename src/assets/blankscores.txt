@@ -1,0 +1,7 @@
+      "scores": [
+            { "answer": 1, "score": null, "pass": false, "answerText": "" },
+            { "answer": 2, "score": null, "pass": false, "answerText": "" },
+            { "answer": 3, "score": null, "pass": false, "answerText": "" },
+            { "answer": 4, "score": null, "pass": false, "answerText": "" },
+            { "answer": 5, "score": null, "pass": false, "answerText": "" }
+        ]

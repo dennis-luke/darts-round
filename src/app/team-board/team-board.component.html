@@ -1,0 +1,24 @@
+
+<div class="team-title">{{ teamName }}</div>
+@if (score >= 0) {
+    <div class="score" [ngClass]="{'score-animating': animating}">{{ score }}</div>
+} @else {
+    <div class="score">❌</div>
+}
+<div class="points">Rounds won: {{ points }}</div>
+<div class="bottom-section">
+    <div class="answers-container">
+        @for(answerScore of answerScores; track answerScore.answer) {
+            <div class="answer-container">
+                @if (answerScore.pass) {
+                    <div class="answer-score">🐔</div>
+                } @else if (answerScore.score !== null) {
+                    <div class="answer-score">{{ answerScore.score }}</div>
+                } @else {
+                    <div class="answer-score">?</div>
+                }
+                <div class="answer-text">{{ answerScore.answerText }}</div>
+            </div>
+        }
+    </div>
+</div>
