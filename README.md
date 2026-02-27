@@ -1,2 +1,1 @@
-# darts-round
-Scoreboard for a quiz round
+Remember to run this with `ng serve --live-reload=false`
