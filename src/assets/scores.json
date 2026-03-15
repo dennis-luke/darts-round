@@ -1,25 +1,25 @@
 {
     "initialScore": 750,
     "leftTeam" : {
-        "teamName": "Grandad",
-        "points": 1,
+        "teamName": "Green Team",
+        "points": 0,
       "scores": [
-        { "answer": 1, "score": 77, "pass": false, "answerText": "" },
-        { "answer": 2, "score": null, "pass": false, "answerText": "" },
-        { "answer": 3, "score": null, "pass": false, "answerText": "" },
-        { "answer": 4, "score": null, "pass": false, "answerText": "" },
-        { "answer": 5, "score": null, "pass": false, "answerText": "" }
-      ]
+            { "answer": 1, "score": null, "pass": false, "answerText": "" },
+            { "answer": 2, "score": null, "pass": false, "answerText": "" },
+            { "answer": 3, "score": null, "pass": false, "answerText": "" },
+            { "answer": 4, "score": null, "pass": false, "answerText": "" },
+            { "answer": 5, "score": null, "pass": false, "answerText": "" }
+        ]
     },
     "rightTeam" : {
-        "teamName": "Grandma",
-        "points": 2,
+        "teamName": "Blue Team",
+        "points": 0,
       "scores": [
-        { "answer": 1, "score": null, "pass": false, "answerText": "" },
-        { "answer": 2, "score": null, "pass": false, "answerText": "" },
-        { "answer": 3, "score": null, "pass": false, "answerText": "" },
-        { "answer": 4, "score": null, "pass": false, "answerText": "" },
-        { "answer": 5, "score": null, "pass": false, "answerText": "" }
-      ]
+            { "answer": 1, "score": null, "pass": false, "answerText": "" },
+            { "answer": 2, "score": null, "pass": false, "answerText": "" },
+            { "answer": 3, "score": null, "pass": false, "answerText": "" },
+            { "answer": 4, "score": null, "pass": false, "answerText": "" },
+            { "answer": 5, "score": null, "pass": false, "answerText": "" }
+        ]
     }
 }
