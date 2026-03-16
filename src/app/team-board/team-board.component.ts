@@ -28,8 +28,11 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
   chickenGiphyUrl = '';
   showCliffGiphy = false;
   cliffGiphyUrl = '';
+  showCelebrationGiphy = false;
+  celebrationGiphyUrl = '';
   private chickenGiphys: string[] = [];
   private cliffGiphys: string[] = [];
+  private celebrationGiphys: string[] = [];
   private previousAnswerScores: any[] = [];
   private isFirstLoad = true;
 
@@ -42,6 +45,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit(): void {
     this.loadChickenGiphys();
     this.loadCliffGiphys();
+    this.loadCelebrationGiphys();
     this.teamName = this.teamScores?.teamName;
     this.answerScores = this.teamScores ? this.teamScores.scores : [];
     this.points = this.teamScores?.points;
@@ -111,6 +115,21 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
       return 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif';
     }
     return this.cliffGiphys[Math.floor(Math.random() * this.cliffGiphys.length)];
+  }
+
+  private loadCelebrationGiphys() {
+    this.http.get<string[]>('assets/celebration-giphys.json').subscribe({
+      next: (giphys) => {
+        this.celebrationGiphys = giphys;
+      }
+    });
+  }
+
+  private getRandomCelebrationGiphy(): string {
+    if (this.celebrationGiphys.length === 0) {
+      return 'https://media.giphy.com/media/3o7TPMdB0r7YsZcvuq/giphy.gif';
+    }
+    return this.celebrationGiphys[Math.floor(Math.random() * this.celebrationGiphys.length)];
   }
 
   private updateBoard(json: Object) {
@@ -191,6 +210,16 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
         this.showCliffGiphy = true;
         setTimeout(() => {
           this.showCliffGiphy = false;
+          this.changeDetectorRef.detectChanges();
+        }, 3000);
+      }
+
+      // Check if score hit exactly zero during animation (skip on first load)
+      if (!this.isFirstLoad && this.score === 0 && !this.showCelebrationGiphy) {
+        this.celebrationGiphyUrl = this.getRandomCelebrationGiphy();
+        this.showCelebrationGiphy = true;
+        setTimeout(() => {
+          this.showCelebrationGiphy = false;
           this.changeDetectorRef.detectChanges();
         }, 3000);
       }
