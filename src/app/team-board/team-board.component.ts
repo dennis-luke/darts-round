@@ -26,8 +26,12 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
   closeTimer = new Subject<any>();
   showChickenGiphy = false;
   chickenGiphyUrl = '';
+  showCliffGiphy = false;
+  cliffGiphyUrl = '';
   private chickenGiphys: string[] = [];
+  private cliffGiphys: string[] = [];
   private previousAnswerScores: any[] = [];
+  private isFirstLoad = true;
 
   constructor(private http: HttpClient, private changeDetectorRef: ChangeDetectorRef) {}
 
@@ -37,6 +41,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.loadChickenGiphys();
+    this.loadCliffGiphys();
     this.teamName = this.teamScores?.teamName;
     this.answerScores = this.teamScores ? this.teamScores.scores : [];
     this.points = this.teamScores?.points;
@@ -93,6 +98,21 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
     return this.chickenGiphys[Math.floor(Math.random() * this.chickenGiphys.length)];
   }
 
+  private loadCliffGiphys() {
+    this.http.get<string[]>('assets/cliff-giphys.json').subscribe({
+      next: (giphys) => {
+        this.cliffGiphys = giphys;
+      }
+    });
+  }
+
+  private getRandomCliffGiphy(): string {
+    if (this.cliffGiphys.length === 0) {
+      return 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif';
+    }
+    return this.cliffGiphys[Math.floor(Math.random() * this.cliffGiphys.length)];
+  }
+
   private updateBoard(json: Object) {
     this.updating = true;
     let scores: any = json;
@@ -102,16 +122,30 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
     this.changeDetectorRef.detectChanges();
     let answerScores = this.getAnswerScores(scores);
 
-    // Check if a new pass was added
-    this.checkForNewPass(answerScores);
+    // Check if a new pass was added (skip on first load)
+    if (!this.isFirstLoad) {
+      this.checkForNewPass(answerScores);
+    }
 
     let newTotal = this.initialScore - this.calculateAnswersTotal(answerScores);
     let diff = this.score - newTotal;
+
+    // Skip animation on first load - just set the score directly
+    if (this.isFirstLoad) {
+      this.isFirstLoad = false;
+      this.score = newTotal;
+      this.answerScores = answerScores;
+      this.updating = false;
+      this.previousAnswerScores = JSON.parse(JSON.stringify(answerScores));
+      return;
+    }
+
     let animationTime = Math.min(Math.round(diff / 2), Math.round(3 + 2 * Math.random())) * 1000;
     let frames = animationTime / 10;
     let i = 0;
     const originalScore = this.score;
     this.animating = true;
+
     this.animateScore(i, frames, diff, originalScore, newTotal, answerScores);
 
     // Store current state for next comparison
@@ -146,10 +180,21 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   animateScore(i: number, frames: number, diff: number, originalScore: number, newTotal: number, answerScores: any[]) {
-    
+
     if (i < frames) {
       let x = i / frames;
       this.score = Math.round(originalScore - diff * (2 * x - x * x));
+
+      // Check if score went below zero during animation (skip on first load)
+      if (!this.isFirstLoad && this.score < 0 && !this.showCliffGiphy) {
+        this.cliffGiphyUrl = this.getRandomCliffGiphy();
+        this.showCliffGiphy = true;
+        setTimeout(() => {
+          this.showCliffGiphy = false;
+          this.changeDetectorRef.detectChanges();
+        }, 3000);
+      }
+
       this.changeDetectorRef.detectChanges();
       setTimeout(() => this.animateScore(i + 1, frames, diff, originalScore, newTotal, answerScores), 10);
     } else {
