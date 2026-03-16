@@ -25,6 +25,8 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
   animating = false;
   closeTimer = new Subject<any>();
   showChickenGiphy = false;
+  chickenGiphyUrl = '';
+  private chickenGiphys: string[] = [];
   private previousAnswerScores: any[] = [];
 
   constructor(private http: HttpClient, private changeDetectorRef: ChangeDetectorRef) {}
@@ -34,6 +36,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loadChickenGiphys();
     this.teamName = this.teamScores?.teamName;
     this.answerScores = this.teamScores ? this.teamScores.scores : [];
     this.points = this.teamScores?.points;
@@ -75,6 +78,21 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
     return this.http.get('assets/scores.json');
   }
 
+  private loadChickenGiphys() {
+    this.http.get<string[]>('assets/chicken-giphys.json').subscribe({
+      next: (giphys) => {
+        this.chickenGiphys = giphys;
+      }
+    });
+  }
+
+  private getRandomChickenGiphy(): string {
+    if (this.chickenGiphys.length === 0) {
+      return 'https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif';
+    }
+    return this.chickenGiphys[Math.floor(Math.random() * this.chickenGiphys.length)];
+  }
+
   private updateBoard(json: Object) {
     this.updating = true;
     let scores: any = json;
@@ -113,6 +131,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
 
       // If current has pass: true and previous didn't have pass or didn't exist
       if (current && current.pass && (!previous || !previous.pass)) {
+        this.chickenGiphyUrl = this.getRandomChickenGiphy();
         this.showChickenGiphy = true;
         this.changeDetectorRef.detectChanges();
 

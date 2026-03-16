@@ -19,6 +19,7 @@ html {
     width: 90%;
     height: 90%;
     padding: 5%;
+    container-type: inline-size;
 }
 .left-team-container {
     background-color: rgb(5, 88, 5);
@@ -29,23 +30,23 @@ html {
 .team-title {
     margin: 0 auto;
     text-align: center;
-    font-size: 12vh;
+    font-size: 15cqi;
     width: 90%;
 }
 
 .score {
     margin: 5vh auto;
     text-align: center;
-    font-size: 12vh;
-    line-height: 14vh;
+    font-size: 15cqi;
+    line-height: 1.2;
     width: 90%;
 }
 
 .points {
     margin: 5vh auto;
     text-align: center;
-    font-size: 6vh;
-    line-height: 8vh;
+    font-size: 7cqi;
+    line-height: 1.2;
     width: 90%;
 }
 
@@ -71,7 +72,7 @@ html {
     vertical-align: top;
     display: inline-block;
     margin: 0 auto;
-    font-size: 5vh;
+    font-size: 6cqi;
     text-align: center;
     width: 25%;
 }
@@ -79,11 +80,12 @@ html {
 .answer-text {
     vertical-align: top;
     display: inline-block;
-    font-size: 5vh;
+    font-size: 6cqi;
     text-align: center;
     width: 75%;
     overflow: hidden;
-    white-space: nowrap;;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
