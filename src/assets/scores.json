@@ -4,7 +4,7 @@
         "teamName": "Green Team",
         "points": 0,
       "scores": [
-            { "answer": 1, "score": 750, "pass": false, "answerText": "" },
+            { "answer": 1, "score": null, "pass": false, "answerText": "" },
             { "answer": 2, "score": null, "pass": false, "answerText": "" },
             { "answer": 3, "score": null, "pass": false, "answerText": "" },
             { "answer": 4, "score": null, "pass": false, "answerText": "" },
@@ -15,7 +15,7 @@
         "teamName": "Blue Team",
         "points": 0,
       "scores": [
-            { "answer": 1, "score": 750, "pass": false, "answerText": "" },
+            { "answer": 1, "score": null, "pass": false, "answerText": "" },
             { "answer": 2, "score": null, "pass": false, "answerText": "" },
             { "answer": 3, "score": null, "pass": false, "answerText": "" },
             { "answer": 4, "score": null, "pass": false, "answerText": "" },

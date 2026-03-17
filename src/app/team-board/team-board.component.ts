@@ -35,6 +35,8 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
   private celebrationGiphys: string[] = [];
   private previousAnswerScores: any[] = [];
   private isFirstLoad = true;
+  private hasCelebratedForCurrentZero = false;
+  private previousScore = -1;
 
   constructor(private http: HttpClient, private changeDetectorRef: ChangeDetectorRef) {}
 
@@ -132,6 +134,70 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
     return this.celebrationGiphys[Math.floor(Math.random() * this.celebrationGiphys.length)];
   }
 
+  private getGifDuration(url: string): Promise<number> {
+    return new Promise<number>((resolve) => {
+      // Use a longer default to ensure most GIFs complete
+      const defaultDuration = 10000; // 10 seconds
+
+      // Fetch the GIF to parse frame delays
+      fetch(url)
+        .then(response => response.arrayBuffer())
+        .then(buffer => {
+          const duration = this.parseGifDuration(buffer);
+          console.log('Parsed GIF duration:', duration, 'ms');
+          resolve(duration || defaultDuration);
+        })
+        .catch(() => {
+          console.log('GIF parse failed, using default:', defaultDuration);
+          resolve(defaultDuration);
+        });
+    });
+  }
+
+  private parseGifDuration(buffer: ArrayBuffer): number {
+    const bytes = new Uint8Array(buffer);
+    let totalDelay = 0;
+    let frames = 0;
+
+    if (bytes.length < 16) return 0;
+
+    let i = 13; // Skip header (6) + LSD (10)
+
+    while (i < bytes.length - 10) {
+      // Graphic Control Extension (0x21 0xF9 0x04)
+      if (bytes[i] === 0x21 && bytes[i + 1] === 0xF9 && bytes[i + 2] === 0x04) {
+        const delay = bytes[i + 4] | (bytes[i + 5] << 8);
+        // Delay is in centiseconds (10ms units), default to 10 if 0
+        const delayMs = delay === 0 ? 10 : delay * 10;
+        totalDelay += delayMs;
+        frames++;
+        i += 8;
+      } else if (bytes[i] === 0x21 && bytes[i + 1] === 0xFF) {
+        // Application Extension - skip
+        const blockSize = bytes[i + 2];
+        i += 3 + blockSize + 1;
+      } else if (bytes[i] === 0x2C) {
+        // Image Descriptor - skip
+        const blockSize = bytes[i + 9];
+        i += 10 + blockSize + 1;
+      } else if (bytes[i] === 0x3B) {
+        // GIF Trailer
+        break;
+      } else {
+        i++;
+      }
+    }
+
+    console.log('GIF frames:', frames, 'total delay:', totalDelay);
+    return totalDelay;
+  }
+
+  private showGiphy(url: string, callback: () => void): void {
+    this.getGifDuration(url).then((duration: number) => {
+      setTimeout(callback, duration);
+    });
+  }
+
   private updateBoard(json: Object) {
     this.updating = true;
     let scores: any = json;
@@ -153,6 +219,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
     if (this.isFirstLoad) {
       this.isFirstLoad = false;
       this.score = newTotal;
+      this.previousScore = newTotal;
       this.answerScores = answerScores;
       this.updating = false;
       this.previousAnswerScores = JSON.parse(JSON.stringify(answerScores));
@@ -188,11 +255,11 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
         this.showChickenGiphy = true;
         this.changeDetectorRef.detectChanges();
 
-        // Hide after 3 seconds and return to scoreboard
-        setTimeout(() => {
+        // Hide after GIF plays one complete cycle
+        this.showGiphy(this.chickenGiphyUrl, () => {
           this.showChickenGiphy = false;
           this.changeDetectorRef.detectChanges();
-        }, 3000);
+        });
         break;
       }
     }
@@ -204,24 +271,14 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
       let x = i / frames;
       this.score = Math.round(originalScore - diff * (2 * x - x * x));
 
-      // Check if score went below zero during animation (skip on first load)
-      if (!this.isFirstLoad && this.score < 0 && !this.showCliffGiphy) {
+      // Check if score went below zero during animation (skip on first load, only if final score < 0)
+      if (!this.isFirstLoad && newTotal < 0 && this.score < 0 && !this.showCliffGiphy) {
         this.cliffGiphyUrl = this.getRandomCliffGiphy();
         this.showCliffGiphy = true;
-        setTimeout(() => {
+        this.showGiphy(this.cliffGiphyUrl, () => {
           this.showCliffGiphy = false;
           this.changeDetectorRef.detectChanges();
-        }, 3000);
-      }
-
-      // Check if score hit exactly zero during animation (skip on first load)
-      if (!this.isFirstLoad && this.score === 0 && !this.showCelebrationGiphy) {
-        this.celebrationGiphyUrl = this.getRandomCelebrationGiphy();
-        this.showCelebrationGiphy = true;
-        setTimeout(() => {
-          this.showCelebrationGiphy = false;
-          this.changeDetectorRef.detectChanges();
-        }, 3000);
+        });
       }
 
       this.changeDetectorRef.detectChanges();
@@ -231,6 +288,28 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
       this.score = newTotal;
       this.answerScores = answerScores;
       this.updating = false;
+
+      // Check final score for celebration (skip on first load) - cliff is handled during animation
+      // Only celebrate if score just changed TO zero, not if it was already zero
+      // Check before updating previousScore
+      if (!this.isFirstLoad && newTotal === 0 && this.previousScore !== 0 && !this.showCelebrationGiphy && !this.hasCelebratedForCurrentZero) {
+        this.hasCelebratedForCurrentZero = true;
+        this.celebrationGiphyUrl = this.getRandomCelebrationGiphy();
+        this.showCelebrationGiphy = true;
+        this.changeDetectorRef.detectChanges();
+        this.showGiphy(this.celebrationGiphyUrl, () => {
+          this.showCelebrationGiphy = false;
+          this.changeDetectorRef.detectChanges();
+        });
+      }
+
+      // Update previousScore after celebration check
+      this.previousScore = newTotal;
+
+      if (newTotal !== 0) {
+        // Reset celebration flag when score moves away from zero
+        this.hasCelebratedForCurrentZero = false;
+      }
     };
   }
 
