@@ -134,68 +134,8 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
     return this.celebrationGiphys[Math.floor(Math.random() * this.celebrationGiphys.length)];
   }
 
-  private getGifDuration(url: string): Promise<number> {
-    return new Promise<number>((resolve) => {
-      // Use a longer default to ensure most GIFs complete
-      const defaultDuration = 10000; // 10 seconds
-
-      // Fetch the GIF to parse frame delays
-      fetch(url)
-        .then(response => response.arrayBuffer())
-        .then(buffer => {
-          const duration = this.parseGifDuration(buffer);
-          console.log('Parsed GIF duration:', duration, 'ms');
-          resolve(duration || defaultDuration);
-        })
-        .catch(() => {
-          console.log('GIF parse failed, using default:', defaultDuration);
-          resolve(defaultDuration);
-        });
-    });
-  }
-
-  private parseGifDuration(buffer: ArrayBuffer): number {
-    const bytes = new Uint8Array(buffer);
-    let totalDelay = 0;
-    let frames = 0;
-
-    if (bytes.length < 16) return 0;
-
-    let i = 13; // Skip header (6) + LSD (10)
-
-    while (i < bytes.length - 10) {
-      // Graphic Control Extension (0x21 0xF9 0x04)
-      if (bytes[i] === 0x21 && bytes[i + 1] === 0xF9 && bytes[i + 2] === 0x04) {
-        const delay = bytes[i + 4] | (bytes[i + 5] << 8);
-        // Delay is in centiseconds (10ms units), default to 10 if 0
-        const delayMs = delay === 0 ? 10 : delay * 10;
-        totalDelay += delayMs;
-        frames++;
-        i += 8;
-      } else if (bytes[i] === 0x21 && bytes[i + 1] === 0xFF) {
-        // Application Extension - skip
-        const blockSize = bytes[i + 2];
-        i += 3 + blockSize + 1;
-      } else if (bytes[i] === 0x2C) {
-        // Image Descriptor - skip
-        const blockSize = bytes[i + 9];
-        i += 10 + blockSize + 1;
-      } else if (bytes[i] === 0x3B) {
-        // GIF Trailer
-        break;
-      } else {
-        i++;
-      }
-    }
-
-    console.log('GIF frames:', frames, 'total delay:', totalDelay);
-    return totalDelay;
-  }
-
   private showGiphy(url: string, callback: () => void): void {
-    this.getGifDuration(url).then((duration: number) => {
-      setTimeout(callback, duration);
-    });
+    setTimeout(callback, 8000);
   }
 
   private updateBoard(json: Object) {
