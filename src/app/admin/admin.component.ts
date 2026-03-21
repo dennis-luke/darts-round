@@ -69,4 +69,8 @@ export class AdminComponent {
     this.leftTeam = this.createEmptyTeam(this.leftTeam.teamName, this.leftTeam.points);
     this.rightTeam = this.createEmptyTeam(this.rightTeam.teamName, this.rightTeam.points);
   }
+
+  hurryUp() {
+    localStorage.setItem('hurryUp', new Date().toISOString());
+  }
 }

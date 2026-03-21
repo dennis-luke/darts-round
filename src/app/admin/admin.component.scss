@@ -60,6 +60,15 @@
   }
 }
 
+.hurry-up-btn {
+  background-color: #AF4C7A;
+  color: white;
+
+  &:hover {
+    background-color: #A0456E;
+  }
+}
+
 .teams-container {
   display: flex;
   gap: 30px;

@@ -29,9 +29,12 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
   cliffGiphyUrl = '';
   showCelebrationGiphy = false;
   celebrationGiphyUrl = '';
+  showHurryUpGiphy = false;
+  hurryUpGiphyUrl = '';
   private chickenGiphys: string[] = [];
   private cliffGiphys: string[] = [];
   private celebrationGiphys: string[] = [];
+  private hurryUpGiphys: string[] = [];
   private previousAnswerScores: any[] = [];
   private isFirstLoad = true;
   private hasCelebratedForCurrentZero = false;
@@ -47,6 +50,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
     this.loadChickenGiphys();
     this.loadCliffGiphys();
     this.loadCelebrationGiphys();
+    this.loadHurryUpGiphys();
     this.teamName = this.teamScores?.teamName;
     this.answerScores = this.teamScores ? this.teamScores.scores : [];
     this.points = this.teamScores?.points;
@@ -55,9 +59,26 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
     this.previousAnswerScores = structuredClone(this.answerScores);
 
     window.addEventListener('storage', (event) => {
-      if (event.key === 'scoreboard') {
-        this.loadScoreboard();
-        this.changeDetectorRef.detectChanges();
+      switch(event.key) {
+        case 'scoreboard': 
+          this.loadScoreboard();
+          this.changeDetectorRef.detectChanges();
+          break;
+        case 'hurryUp': 
+          if (this.showHurryUpGiphy) {
+            break;
+          }
+          
+          this.hurryUpGiphyUrl = this.getRandomHurryUpGiphy();
+          this.showHurryUpGiphy = true;
+          this.changeDetectorRef.detectChanges();
+
+          // Hide after GIF plays one complete cycle
+          this.showGiphy(() => {
+            this.showHurryUpGiphy = false;
+            this.changeDetectorRef.detectChanges();
+          });
+          break;
       }
     });
 
@@ -93,6 +114,21 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
       .reduce((a, b) => a + b, 0);
   }
 
+  private loadHurryUpGiphys() {
+    this.http.get<string[]>('assets/hurry-up-giphys.json').subscribe({
+      next: (giphys) => {
+        this.hurryUpGiphys = giphys;
+      }
+    });
+  }
+
+  private getRandomHurryUpGiphy(): string {
+    if (this.hurryUpGiphys.length === 0) {
+      return 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzEzOWJlbnJ2ZWFpb2ZxajZ3YTdjNjdvb2ZtYmd1dGszdm02MDc1diZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/6aZlWtZC0JuDNNm5nE/giphy.gif';
+    }
+    return this.hurryUpGiphys[Math.floor(Math.random() * this.hurryUpGiphys.length)];
+  }
+
   private loadChickenGiphys() {
     this.http.get<string[]>('assets/chicken-giphys.json').subscribe({
       next: (giphys) => {
@@ -103,7 +139,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
 
   private getRandomChickenGiphy(): string {
     if (this.chickenGiphys.length === 0) {
-      return 'https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif';
+      return 'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExNW1kYTc5ZmtmbjR1ajdkcTlxd2Q1cm9rMjV1cjJycGFrdmZva214biZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ttK3cEDFJ48r6/giphy.gif';
     }
     return this.chickenGiphys[Math.floor(Math.random() * this.chickenGiphys.length)];
   }
@@ -118,7 +154,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
 
   private getRandomCliffGiphy(): string {
     if (this.cliffGiphys.length === 0) {
-      return 'https://media.giphy.com/media/3o7TKMt1VVNkHV2PaE/giphy.gif';
+      return 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWZncjB3cW0wNXB2dWNuYjBvamY5cTVqNzdneWtidmQ4d3ptcnJuZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/9S3FT1Lt3iaCQoUXEn/giphy.gif';
     }
     return this.cliffGiphys[Math.floor(Math.random() * this.cliffGiphys.length)];
   }
@@ -133,7 +169,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
 
   private getRandomCelebrationGiphy(): string {
     if (this.celebrationGiphys.length === 0) {
-      return 'https://media.giphy.com/media/3o7TPMdB0r7YsZcvuq/giphy.gif';
+      return 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExazNleTc3aGx5dDJndjQ1YXA3YWlibDdwczlkenNiZ3ByeDl1azN2MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/qnOBmH70CGSVa/giphy.gif';
     }
     return this.celebrationGiphys[Math.floor(Math.random() * this.celebrationGiphys.length)];
   }
