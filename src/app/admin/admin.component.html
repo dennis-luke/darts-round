@@ -4,7 +4,8 @@
       <label>Initial Score:</label>
       <input type="number" [(ngModel)]="initialScore" min="0" />
     </div>
-    <button class="update-btn" (click)="updateScoreboard()">Update Scoreboard</button>
+    <button class="control-btn update-btn" (click)="updateScoreboard()">Update Scoreboard</button>
+    <button class="control-btn reset-btn" (click)="resetAnswers()">Reset</button>
   </div>
 
   <div class="teams-container">

@@ -31,27 +31,33 @@
   }
 }
 
-.update-btn {
+.control-btn {
   padding: 10px 25px;
   font-size: 16px;
   font-weight: bold;
-  background-color: #4CAF50;
-  color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s;
+
+}
+
+.update-btn {
+  background-color: #4CAF50;
+  color: white;
 
   &:hover {
     background-color: #45a049;
   }
 }
 
-.save-message {
-  background-color: #ff9800;
-  color: black;
-  padding: 10px 30px;
-  font-weight: bold;
+.reset-btn {
+  background-color: #814CAF;
+  color: white;
+
+  &:hover {
+    background-color: #7745A0;
+  }
 }
 
 .teams-container {

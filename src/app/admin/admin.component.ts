@@ -33,10 +33,10 @@ export class AdminComponent {
     }
   }
 
-  private createEmptyTeam(teamName: string): Team {
+  private createEmptyTeam(teamName: string, points: number = 0): Team {
     return {
       teamName: teamName,
-      points: 0,
+      points: points,
       scores: Array.from({ length: 5 }, (_, i) => ({
         pass: false,
         answerText: '',
@@ -63,5 +63,10 @@ export class AdminComponent {
     localStorage.setItem('scoreboard', JSON.stringify(gameState));
 
     this.eventBus.emitScoreUpdated();
+  }
+
+  resetAnswers() {
+    this.leftTeam = this.createEmptyTeam(this.leftTeam.teamName, this.leftTeam.points);
+    this.rightTeam = this.createEmptyTeam(this.rightTeam.teamName, this.rightTeam.points);
   }
 }
