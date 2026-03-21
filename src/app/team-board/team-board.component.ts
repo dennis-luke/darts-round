@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Subject, switchMap, takeUntil, timer } from 'rxjs';
+import { Subject } from 'rxjs';
 import { AnswerScore, GameState } from '../models';
-import { EventBusService } from '../services/event-bus.service';
+import { ScoreboardService } from '../services/scoreboard.service';
 
 @Component({
   selector: 'app-team-board',
@@ -37,7 +37,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
   private hasCelebratedForCurrentZero = false;
   private previousScore = -1;
 
-  constructor(private http: HttpClient, private changeDetectorRef: ChangeDetectorRef, private eventBus: EventBusService) {}
+  constructor(private http: HttpClient, private changeDetectorRef: ChangeDetectorRef, private scoreboardService: ScoreboardService) {}
 
   ngOnDestroy(): void {
     this.closeTimer.next(null);
@@ -61,11 +61,11 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
 
-    this.isFirstLoad = false;
+    this.loadScoreboard();
   }
 
   loadScoreboard() {
-    const saved = localStorage.getItem('scoreboard');
+    const saved = this.scoreboardService.getGameState();
 
     if (saved) {
       const gameState: GameState = JSON.parse(saved);
