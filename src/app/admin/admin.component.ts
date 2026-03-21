@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TeamAdminComponent } from '../team-admin/team-admin.component';
 import { GameState, Team } from '../models';
-import { EventBusService } from '../services/event-bus.service';
 import { ScoreboardService } from '../services/scoreboard.service';
 
 @Component({
@@ -18,7 +17,7 @@ export class AdminComponent {
   leftTeam: Team;
   rightTeam: Team;
 
-  constructor(private eventBus: EventBusService, private scoreboardService: ScoreboardService) {
+  constructor(private scoreboardService: ScoreboardService) {
     const saved = this.scoreboardService.getGameState();
 
     if (saved) {
@@ -61,8 +60,6 @@ export class AdminComponent {
     };
 
     localStorage.setItem('scoreboard', JSON.stringify(gameState));
-
-    this.eventBus.emitScoreUpdated();
   }
 
   resetAnswers() {
