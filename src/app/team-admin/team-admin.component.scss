@@ -1,0 +1,103 @@
+.team-admin {
+  padding: 20px;
+  border-radius: 8px;
+  color: white;
+
+  &.left {
+    background-color: #055805;
+  }
+
+  &.right {
+    background-color: #050585;
+  }
+
+  h2 {
+    margin-top: 0;
+  }
+
+  .field {
+    margin-bottom: 15px;
+
+    label {
+      display: inline-block;
+      width: 180px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      width: 200px;
+    }
+
+    input[type="number"] {
+      width: 80px;
+    }
+  }
+
+  .scores {
+    margin-top: 20px;
+
+    h3 {
+      margin-top: 0;
+    }
+
+    .score-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 5px;
+
+      &.header {
+        font-weight: bold;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
+
+      .row-num {
+        width: 30px;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      span {
+        display: inline-block;
+
+        &:first-child {
+          width: 30px;
+        }
+
+        &:nth-child(2) {
+          width: 40px;
+        }
+
+        &:nth-child(3) {
+          width: 250px;
+        }
+
+        &:nth-child(4) {
+          width: 80px;
+        }
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        padding: 6px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
+      input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}

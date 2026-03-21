@@ -1,0 +1,49 @@
+<div class="team-admin" [class.left]="team === 'left'" [class.right]="team === 'right'">
+
+  <div class="field">
+    <label>Team Name:</label>
+    <input type="text" [(ngModel)]="teamName" (ngModelChange)="updateTeam()" />
+  </div>
+
+  <div class="field">
+    <label>Points (rounds won):</label>
+    <input type="number" [(ngModel)]="points" (ngModelChange)="updateTeam()" min="0" />
+  </div>
+
+  <div class="scores">
+    <h3>Scores</h3>
+    <div class="score-row header">
+      <span>#</span>
+      <span>Pass</span>
+      <span>Answer Text</span>
+      <span>Points</span>
+    </div>
+    @for (score of scores; track $index; let i = $index) {
+      <div class="score-row">
+        <span class="row-num">{{ i + 1 }}</span>
+        <span>
+          <input
+            type="checkbox"
+            [checked]="score.pass"
+            (change)="updateScore(i, 'pass', $any($event.target).checked)"
+          />
+        </span>
+        <span>
+          <input
+            type="text"
+            [value]="score.answerText"
+            (input)="updateScore(i, 'answerText', $any($event.target).value)"
+          />
+        </span>
+        <span>
+          <input
+            type="number"
+            [value]="score.score"
+            (input)="updateScore(i, 'score', $any($event.target).value)"
+            placeholder="?"
+          />
+        </span>
+      </div>
+    }
+  </div>
+</div>

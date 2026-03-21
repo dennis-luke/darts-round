@@ -1,16 +1,17 @@
-<div class="container">
-  <div class="team-container left-team-container">
-    <div class="inner-team-container">
-      <app-team-board side="left" [initialScore]="scores?.initialScore" [teamScores]="scores?.leftTeam"></app-team-board>
+@if (showScoreboard) {
+  <div class="container">
+    <div class="team-container left-team-container">
+      <div class="inner-team-container">
+        <app-team-board side="left" [initialScore]="gameState.initialScore" [teamScores]="gameState.leftTeam"></app-team-board>
+      </div>
+    </div>
+
+    <div class="team-container right-team-container">
+      <div class="inner-team-container">
+        <app-team-board side="right" [initialScore]="gameState.initialScore" [teamScores]="gameState.rightTeam"></app-team-board>
+      </div>
     </div>
   </div>
-
-  <div class="team-container right-team-container">
-    <div class="inner-team-container">
-      <app-team-board side="right" [initialScore]="scores?.initialScore" [teamScores]="scores?.rightTeam"></app-team-board>
-    </div>
-  </div>
-</div>
-
+}
 
 <router-outlet />

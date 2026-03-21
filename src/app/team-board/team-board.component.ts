@@ -2,13 +2,12 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Subject, switchMap, takeUntil, timer } from 'rxjs';
-
-const INTERVAL = 1000;
+import { AnswerScore, GameState } from '../models';
+import { EventBusService } from '../services/event-bus.service';
 
 @Component({
   selector: 'app-team-board',
   imports: [CommonModule],
-  providers: [HttpClient],
   templateUrl: './team-board.component.html',
   styleUrl: './team-board.component.scss'
 })
@@ -38,7 +37,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
   private hasCelebratedForCurrentZero = false;
   private previousScore = -1;
 
-  constructor(private http: HttpClient, private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(private http: HttpClient, private changeDetectorRef: ChangeDetectorRef, private eventBus: EventBusService) {}
 
   ngOnDestroy(): void {
     this.closeTimer.next(null);
@@ -53,18 +52,27 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
     this.points = this.teamScores?.points;
 
     // Initialize previousAnswerScores for first comparison
-    this.previousAnswerScores = JSON.parse(JSON.stringify(this.answerScores));
+    this.previousAnswerScores = structuredClone(this.answerScores);
 
-    timer(0, INTERVAL).pipe(
-      switchMap(() => this.getScoresFromFile()),
-      takeUntil(this.closeTimer)
-    ).subscribe({
-      next: (json: any) => {
-        if (!this.updating) {
-          this.updateBoard(json);
-        }
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'scoreboard') {
+        this.loadScoreboard();
+        this.changeDetectorRef.detectChanges();
       }
     });
+
+    this.isFirstLoad = false;
+  }
+
+  loadScoreboard() {
+    const saved = localStorage.getItem('scoreboard');
+
+    if (saved) {
+      const gameState: GameState = JSON.parse(saved);
+      this.updateBoard(gameState);
+    } else {
+      console.warn('No scoreboard found in localStorage');
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -83,10 +91,6 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
       .filter(answerScore => !answerScore.pass)
       .map(answerScore => answerScore.score)
       .reduce((a, b) => a + b, 0);
-  }
-
-  private getScoresFromFile() {
-    return this.http.get('assets/scores.json');
   }
 
   private loadChickenGiphys() {
@@ -134,18 +138,17 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
     return this.celebrationGiphys[Math.floor(Math.random() * this.celebrationGiphys.length)];
   }
 
-  private showGiphy(url: string, callback: () => void): void {
+  private showGiphy(callback: () => void): void {
     setTimeout(callback, 8000);
   }
 
-  private updateBoard(json: Object) {
+  private updateBoard(gameState: GameState) {
     this.updating = true;
-    let scores: any = json;
-    this.initialScore = scores.initialScore;
-    this.points = this.getTeamPoints(scores);
-    this.teamName = this.getTeamName(scores);
+    this.initialScore = gameState.initialScore;
+    this.points = this.getTeamPoints(gameState);
+    this.teamName = this.getTeamName(gameState);
     this.changeDetectorRef.detectChanges();
-    let answerScores = this.getAnswerScores(scores);
+    let answerScores = this.getAnswerScores(gameState);
 
     // Check if a new pass was added (skip on first load)
     if (!this.isFirstLoad) {
@@ -196,7 +199,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
         this.changeDetectorRef.detectChanges();
 
         // Hide after GIF plays one complete cycle
-        this.showGiphy(this.chickenGiphyUrl, () => {
+        this.showGiphy(() => {
           this.showChickenGiphy = false;
           this.changeDetectorRef.detectChanges();
         });
@@ -215,7 +218,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
       if (!this.isFirstLoad && newTotal < 0 && this.score < 0 && !this.showCliffGiphy) {
         this.cliffGiphyUrl = this.getRandomCliffGiphy();
         this.showCliffGiphy = true;
-        this.showGiphy(this.cliffGiphyUrl, () => {
+        this.showGiphy(() => {
           this.showCliffGiphy = false;
           this.changeDetectorRef.detectChanges();
         });
@@ -237,7 +240,7 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
         this.celebrationGiphyUrl = this.getRandomCelebrationGiphy();
         this.showCelebrationGiphy = true;
         this.changeDetectorRef.detectChanges();
-        this.showGiphy(this.celebrationGiphyUrl, () => {
+        this.showGiphy(() => {
           this.showCelebrationGiphy = false;
           this.changeDetectorRef.detectChanges();
         });
@@ -253,27 +256,27 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
     };
   }
 
-  getAnswerScores(scores: any): any[] {
+  getAnswerScores(gameState: GameState): AnswerScore[] {
     if (this.side == 'left') {
-      return scores.leftTeam.scores;
+      return gameState.leftTeam.scores;
     } else {
-      return scores.rightTeam.scores;
+      return gameState.rightTeam.scores;
     }
   }
 
-  getTeamPoints(scores: any): number {
+  getTeamPoints(gameState: GameState): number {
     if (this.side == 'left') {
-      return scores.leftTeam.points;
+      return gameState.leftTeam.points;
     } else {
-      return scores.rightTeam.points;
+      return gameState.rightTeam.points;
     }
   }
 
-  getTeamName(scores: any): string {
+  getTeamName(gameState: GameState): string {
     if (this.side == 'left') {
-      return scores.leftTeam.teamName;
+      return gameState.leftTeam.teamName;
     } else {
-      return scores.rightTeam.teamName;
+      return gameState.rightTeam.teamName;
     }
   }
 

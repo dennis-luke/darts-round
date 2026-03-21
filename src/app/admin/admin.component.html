@@ -1,0 +1,27 @@
+<div class="admin-container">
+  <div class="top-bar">
+    <div class="initial-score">
+      <label>Initial Score:</label>
+      <input type="number" [(ngModel)]="initialScore" min="0" />
+    </div>
+    <button class="update-btn" (click)="updateScoreboard()">Update Scoreboard</button>
+  </div>
+
+  <div class="teams-container">
+    <app-team-admin
+      team="left"
+      [teamName]="leftTeam.teamName"
+      [points]="leftTeam.points"
+      [scores]="leftTeam.scores"
+      (teamChange)="updateLeftTeam($event)"
+    ></app-team-admin>
+
+    <app-team-admin
+      team="right"
+      [teamName]="rightTeam.teamName"
+      [points]="rightTeam.points"
+      [scores]="rightTeam.scores"
+      (teamChange)="updateRightTeam($event)"
+    ></app-team-admin>
+  </div>
+</div>
