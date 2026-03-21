@@ -69,6 +69,15 @@
   }
 }
 
+.switch-btn {
+  background-color: #4C7AAF;
+  color: white;
+
+  &:hover {
+    background-color: #456EA0;
+  }
+}
+
 .teams-container {
   display: flex;
   gap: 30px;

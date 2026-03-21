@@ -16,6 +16,7 @@ export class AdminComponent {
   initialScore: number;
   leftTeam: Team;
   rightTeam: Team;
+  reverse: boolean = false;
 
   constructor(private scoreboardService: ScoreboardService) {
     const saved = this.scoreboardService.getGameState();
@@ -69,5 +70,9 @@ export class AdminComponent {
 
   hurryUp() {
     localStorage.setItem('hurryUp', new Date().toISOString());
+  }
+
+  switch() {
+    this.reverse = !this.reverse;
   }
 }

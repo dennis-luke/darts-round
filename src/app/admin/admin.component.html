@@ -7,9 +7,10 @@
     <button class="control-btn update-btn" (click)="updateScoreboard()">Update Scoreboard</button>
     <button class="control-btn reset-btn" (click)="resetAnswers()">Reset</button>
     <button class="control-btn hurry-up-btn" (click)="hurryUp()">Hurry Up</button>
+    <button class="control-btn switch-btn" (click)="switch()">Switch</button>
   </div>
 
-  <div class="teams-container">
+  <div class="teams-container" [ngStyle]="reverse ? { 'flex-direction': 'row-reverse' } : {}">
     <app-team-admin
       team="left"
       [teamName]="leftTeam.teamName"
