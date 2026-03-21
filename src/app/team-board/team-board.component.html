@@ -24,7 +24,7 @@
 <div class="points">Rounds won: {{ points }}</div>
 <div class="bottom-section">
     <div class="answers-container">
-        @for(answerScore of answerScores; track answerScore.answer) {
+        @for (answerScore of answerScores; track teamName + 'answer' + $index) {
             <div class="answer-container">
                 @if (answerScore.pass) {
                     <div class="answer-score">🐔</div>

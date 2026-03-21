@@ -18,7 +18,7 @@
       <span>Answer Text</span>
       <span>Points</span>
     </div>
-    @for (score of scores; track $index; let i = $index) {
+    @for (score of scores; track team + $index; let i = $index) {
       <div class="score-row">
         <span class="row-num">{{ i + 1 }}</span>
         <span>
