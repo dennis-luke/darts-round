@@ -1,21 +1,33 @@
 .admin-container {
   min-height: 100vh;
+  height: 100vh;
+  overflow: auto;
   background-color: #1a1a1a;
   color: white;
+  display: flex;
+  flex-direction: column;
 }
 
 .top-bar {
   background-color: black;
-  padding: 15px 30px;
+  padding: 15px 20px;
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
+  flex-wrap: wrap;
+  min-height: 60px;
+
+  @media (max-width: 900px) {
+    gap: 12px;
+    padding: 10px 15px;
+  }
 }
 
 .initial-score {
   display: flex;
   align-items: center;
   gap: 15px;
+  flex-shrink: 0;
 
   label {
     font-size: 18px;
@@ -29,6 +41,12 @@
     border-radius: 4px;
     width: 100px;
   }
+
+  @media (max-width: 900px) {
+    gap: 8px;
+    label { font-size: 14px; }
+    input { padding: 5px 8px; font-size: 14px; width: 60px; }
+  }
 }
 
 .control-btn {
@@ -39,7 +57,13 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 
+  @media (max-width: 900px) {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
 }
 
 .update-btn {
@@ -80,7 +104,21 @@
 
 .teams-container {
   display: flex;
-  gap: 30px;
-  padding: 30px;
+  gap: 20px;
+  padding: 20px;
   justify-content: center;
+  flex: 1;
+  overflow: auto;
+
+  @media (max-width: 1200px) {
+    gap: 15px;
+    padding: 15px;
+  }
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+  }
 }

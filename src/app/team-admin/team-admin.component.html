@@ -12,38 +12,44 @@
 
   <div class="scores">
     <h3>Scores</h3>
-    <div class="score-row header">
-      <span>#</span>
-      <span>Pass</span>
-      <span>Answer Text</span>
-      <span>Points</span>
-    </div>
-    @for (score of scores; track team + $index; let i = $index) {
-      <div class="score-row">
-        <span class="row-num">{{ i + 1 }}</span>
-        <span>
-          <input
-            type="checkbox"
-            [checked]="score.pass"
-            (change)="updateScore(i, 'pass', $any($event.target).checked)"
-          />
-        </span>
-        <span>
-          <input
-            type="text"
-            [value]="score.answerText"
-            (input)="updateScore(i, 'answerText', $any($event.target).value)"
-          />
-        </span>
-        <span>
-          <input
-            type="number"
-            [value]="score.score"
-            (input)="updateScore(i, 'score', $any($event.target).value)"
-            placeholder="?"
-          />
-        </span>
-      </div>
-    }
+    <table>
+      <thead>
+        <tr>
+          <th class="row-num">#</th>
+          <th class="col-pass">Pass</th>
+          <th class="col-answer">Answer Text</th>
+          <th class="col-score">Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (score of scores; track team + $index; let i = $index) {
+          <tr>
+            <td class="row-num">{{ i + 1 }}</td>
+            <td class="col-pass">
+              <input
+                type="checkbox"
+                [checked]="score.pass"
+                (change)="updateScore(i, 'pass', $any($event.target).checked)"
+              />
+            </td>
+            <td class="col-answer">
+              <input
+                type="text"
+                [value]="score.answerText"
+                (input)="updateScore(i, 'answerText', $any($event.target).value)"
+              />
+            </td>
+            <td class="col-score">
+              <input
+                type="number"
+                [value]="score.score"
+                (input)="updateScore(i, 'score', $any($event.target).value)"
+                placeholder="?"
+              />
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
   </div>
 </div>

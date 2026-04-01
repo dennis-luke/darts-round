@@ -2,6 +2,22 @@
   padding: 20px;
   border-radius: 8px;
   color: white;
+  flex: 1;
+  min-width: 350px;
+  max-width: 600px;
+  overflow: auto;
+
+  @media (max-width: 1200px) {
+    padding: 15px;
+    min-width: 300px;
+  }
+
+  @media (max-width: 900px) {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+    min-width: auto;
+  }
 
   &.left {
     background-color: #055805;
@@ -13,6 +29,7 @@
 
   h2 {
     margin-top: 0;
+    font-size: 1.5rem;
   }
 
   .field {
@@ -22,19 +39,52 @@
       display: inline-block;
       width: 180px;
       font-weight: bold;
+
+      @media (max-width: 1200px) {
+        width: 140px;
+      }
+
+      @media (max-width: 900px) {
+        width: 100px;
+      }
     }
 
-    input[type="text"],
-    input[type="number"] {
+    input[type="text"] {
       padding: 8px;
       border: none;
       border-radius: 4px;
       font-size: 14px;
       width: 200px;
+
+      @media (max-width: 1200px) {
+        width: 150px;
+        padding: 6px;
+      }
+
+      @media (max-width: 900px) {
+        width: 100px;
+        padding: 5px;
+        font-size: 13px;
+      }
     }
 
     input[type="number"] {
+      padding: 8px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
       width: 80px;
+
+      @media (max-width: 1200px) {
+        width: 70px;
+        padding: 6px;
+      }
+
+      @media (max-width: 900px) {
+        width: 50px;
+        padding: 5px;
+        font-size: 13px;
+      }
     }
   }
 
@@ -45,17 +95,22 @@
       margin-top: 0;
     }
 
-    .score-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 10px;
-      padding: 5px;
+    table {
+      width: 100%;
+      border-collapse: collapse;
 
-      &.header {
+      th, td {
+        padding: 8px 5px;
+        text-align: left;
+      }
+
+      th {
         font-weight: bold;
         background: rgba(255, 255, 255, 0.1);
-        border-radius: 4px;
+      }
+
+      td {
+        vertical-align: middle;
       }
 
       .row-num {
@@ -64,27 +119,28 @@
         font-weight: bold;
       }
 
-      span {
-        display: inline-block;
-
-        &:first-child {
-          width: 30px;
-        }
-
-        &:nth-child(2) {
-          width: 40px;
-        }
-
-        &:nth-child(3) {
-          width: 250px;
-        }
-
-        &:nth-child(4) {
-          width: 80px;
-        }
+      .col-pass {
+        width: 30px;
+        text-align: center;
       }
 
-      input[type="text"],
+      .col-score {
+        width: 60px;
+      }
+
+      .col-answer {
+        width: 250px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 6px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
       input[type="number"] {
         width: 100%;
         padding: 6px;
