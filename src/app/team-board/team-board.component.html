@@ -1,20 +1,8 @@
 
-<div class="giphy-overlay" *ngIf="showChickenGiphy">
-    <img [src]="chickenGiphyUrl" alt="Chicken" class="giphy-img" />
-    <a href="https://giphy.com" target="_blank" class="giphy-attribution">GIPHY</a>
-</div>
-<div class="giphy-overlay" *ngIf="showCliffGiphy">
-    <img [src]="cliffGiphyUrl" alt="Cliff" class="giphy-img" />
-    <a href="https://giphy.com" target="_blank" class="giphy-attribution">GIPHY</a>
-</div>
-<div class="giphy-overlay" *ngIf="showCelebrationGiphy">
-    <img [src]="celebrationGiphyUrl" alt="Celebration" class="giphy-img" />
-    <a href="https://giphy.com" target="_blank" class="giphy-attribution">GIPHY</a>
-</div>
-<div class="giphy-overlay" *ngIf="showHurryUpGiphy">
-    <img [src]="hurryUpGiphyUrl" alt="Celebration" class="giphy-img" />
-    <a href="https://giphy.com" target="_blank" class="giphy-attribution">GIPHY</a>
-</div>
+<app-giphy-overlay [giphyUrl]="chickenGiphyUrl" [visible]="showChickenGiphy" alt="Chicken" (hidden)="showChickenGiphy = false"></app-giphy-overlay>
+<app-giphy-overlay [giphyUrl]="cliffGiphyUrl" [visible]="showCliffGiphy" alt="Cliff" (hidden)="showCliffGiphy = false"></app-giphy-overlay>
+<app-giphy-overlay [giphyUrl]="celebrationGiphyUrl" [visible]="showCelebrationGiphy" alt="Celebration" (hidden)="showCelebrationGiphy = false"></app-giphy-overlay>
+<app-giphy-overlay [giphyUrl]="hurryUpGiphyUrl" [visible]="showHurryUpGiphy" alt="Hurry Up" (hidden)="showHurryUpGiphy = false"></app-giphy-overlay>
 <div class="team-title">{{ teamName }}</div>
 @if (score >= 0) {
     <div class="score" [ngClass]="{'score-animating': animating}">{{ score }}</div>

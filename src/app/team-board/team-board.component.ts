@@ -4,10 +4,11 @@ import { ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, Simp
 import { Subject } from 'rxjs';
 import { AnswerScore, GameState } from '../models';
 import { ScoreboardService } from '../services/scoreboard.service';
+import { GiphyOverlayComponent } from '../giphy-overlay/giphy-overlay.component';
 
 @Component({
   selector: 'app-team-board',
-  imports: [CommonModule],
+  imports: [CommonModule, GiphyOverlayComponent],
   templateUrl: './team-board.component.html',
   styleUrl: './team-board.component.scss'
 })
@@ -64,20 +65,14 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
           this.loadScoreboard();
           this.changeDetectorRef.detectChanges();
           break;
-        case 'hurryUp': 
+        case 'hurryUp':
           if (this.showHurryUpGiphy) {
             break;
           }
-          
+
           this.hurryUpGiphyUrl = this.getRandomHurryUpGiphy();
           this.showHurryUpGiphy = true;
           this.changeDetectorRef.detectChanges();
-
-          // Hide after GIF plays one complete cycle
-          this.showGiphy(() => {
-            this.showHurryUpGiphy = false;
-            this.changeDetectorRef.detectChanges();
-          });
           break;
       }
     });
@@ -174,10 +169,6 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
     return this.celebrationGiphys[Math.floor(Math.random() * this.celebrationGiphys.length)];
   }
 
-  private showGiphy(callback: () => void): void {
-    setTimeout(callback, 8000);
-  }
-
   private updateBoard(gameState: GameState) {
     this.updating = true;
     this.initialScore = gameState.initialScore;
@@ -233,12 +224,6 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
         this.chickenGiphyUrl = this.getRandomChickenGiphy();
         this.showChickenGiphy = true;
         this.changeDetectorRef.detectChanges();
-
-        // Hide after GIF plays one complete cycle
-        this.showGiphy(() => {
-          this.showChickenGiphy = false;
-          this.changeDetectorRef.detectChanges();
-        });
         break;
       }
     }
@@ -254,10 +239,6 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
       if (!this.isFirstLoad && newTotal < 0 && this.score < 0 && !this.showCliffGiphy) {
         this.cliffGiphyUrl = this.getRandomCliffGiphy();
         this.showCliffGiphy = true;
-        this.showGiphy(() => {
-          this.showCliffGiphy = false;
-          this.changeDetectorRef.detectChanges();
-        });
       }
 
       this.changeDetectorRef.detectChanges();
@@ -276,10 +257,6 @@ export class TeamBoardComponent implements OnInit, OnChanges, OnDestroy {
         this.celebrationGiphyUrl = this.getRandomCelebrationGiphy();
         this.showCelebrationGiphy = true;
         this.changeDetectorRef.detectChanges();
-        this.showGiphy(() => {
-          this.showCelebrationGiphy = false;
-          this.changeDetectorRef.detectChanges();
-        });
       }
 
       // Update previousScore after celebration check
