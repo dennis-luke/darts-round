@@ -1,0 +1,13 @@
+<div class="container">
+    <div class="team-container left-team-container">
+      <div class="inner-team-container">
+        <app-team-board side="left" [initialScore]="gameState.initialScore" [teamScores]="gameState.leftTeam"></app-team-board>
+      </div>
+    </div>
+
+    <div class="team-container right-team-container">
+      <div class="inner-team-container">
+        <app-team-board side="right" [initialScore]="gameState.initialScore" [teamScores]="gameState.rightTeam"></app-team-board>
+      </div>
+    </div>
+  </div>
