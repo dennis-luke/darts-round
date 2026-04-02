@@ -10,82 +10,126 @@ html, body {
 .container {
     display: flex;
     height: 100vh;
+    width: 100vw;
 }
 
 .team-container {
     flex: 1;
-}
-.inner-team-container {
-    width: 90%;
-    height: 90%;
-    padding: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3cqi;
     container-type: inline-size;
 }
+
+.inner-team-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0.2cqi;
+    box-sizing: border-box;
+}
+
 .left-team-container {
-    background-color: rgb(5, 88, 5);
+    background: linear-gradient(135deg, #0a3d0a 0%, #055805 50%, #0a4d0a 100%);
+    border-right: 0.3cqi solid #1a7a1a;
 }
+
 .right-team-container {
-    background-color: rgb(5, 5, 133);
+    background: linear-gradient(135deg, #0a0a4d 0%, #050585 50%, #0a0a6e 100%);
+    border-left: 0.3cqi solid #1a1a8a;
 }
+
 .team-title {
-    margin: 0 auto;
+    margin: 0;
     text-align: center;
-    font-size: 15cqi;
-    width: 90%;
+    font-size: 5cqi;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2cqi;
+    text-shadow: 0 0.2cqi rgba(0, 0, 0, 0.5);
+    padding: 0.5cqi 1cqi;
+    width: 100%;
 }
 
 .score {
-    margin: 5vh auto;
+    margin: 0;
     text-align: center;
-    font-size: 15cqi;
-    line-height: 1.2;
-    width: 90%;
+    font-size: 28cqi;
+    font-weight: 900;
+    line-height: 1;
+    text-shadow: 0 0.3cqi rgba(0, 0, 0, 0.5);
+    padding: 1cqi 2cqi;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 1cqi;
+    min-width: 18cqi;
 }
 
 .points {
-    margin: 5vh auto;
+    margin: 0.5cqi;
     text-align: center;
-    font-size: 7cqi;
-    line-height: 1.2;
-    width: 90%;
+    font-size: 3.5cqi;
+    font-weight: 500;
+    opacity: 0.9;
+    padding: 0.5cqi 1cqi;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 0.8cqi;
 }
 
 .score-animating {
-    color: yellow;
+    color: #ffeb3b;
+    text-shadow: 0 0 1cqi #ffeb3b;
 }
 
 .bottom-section {
-    position: relative;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
 }
 
 .answers-container {
     width: 100%;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8cqi;
 }
 
 .answer-container {
     width: 100%;
-    margin: 1vh 0;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0.5cqi;
+    padding: 0.5cqi;
+    box-sizing: border-box;
 }
 
 .answer-score {
-    vertical-align: top;
-    display: inline-block;
-    margin: 0 auto;
-    font-size: 6cqi;
-    text-align: center;
-    width: 25%;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5cqi;
+    font-weight: 700;
+    width: 15%;
+    min-width: 3cqi;
+    text-shadow: 0 0.1cqi rgba(0, 0, 0, 0.5);
 }
 
 .answer-text {
-    vertical-align: top;
-    display: inline-block;
-    font-size: 6cqi;
-    text-align: center;
-    width: 75%;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    font-size: 2cqi;
+    padding-left: 0.5cqi;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding: 0.6cqi 0.8cqi;
 }
 
 
