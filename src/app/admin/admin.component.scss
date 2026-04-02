@@ -19,7 +19,8 @@
 
   @media (max-width: 900px) {
     gap: 12px;
-    padding: 10px 15px;
+    padding: 8px 12px;
+    min-height: 45px;
   }
 }
 
@@ -120,5 +121,15 @@
     align-items: center;
     gap: 10px;
     padding: 10px;
+  }
+
+  &.reverse {
+    @media (min-width: 901px) {
+      flex-direction: row-reverse;
+    }
+
+    @media (max-width: 900px) {
+      flex-direction: column-reverse;
+    }
   }
 }

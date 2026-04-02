@@ -30,6 +30,10 @@
   h2 {
     margin-top: 0;
     font-size: 1.5rem;
+
+    @media (max-width: 900px) {
+      font-size: 1.2rem;
+    }
   }
 
   .field {
@@ -93,6 +97,10 @@
 
     h3 {
       margin-top: 0;
+
+      @media (max-width: 900px) {
+        font-size: 1rem;
+      }
     }
 
     table {
@@ -102,11 +110,19 @@
       th, td {
         padding: 8px 5px;
         text-align: left;
+
+        @media (max-width: 900px) {
+          padding: 5px 3px;
+        }
       }
 
       th {
         font-weight: bold;
         background: rgba(255, 255, 255, 0.1);
+
+        @media (max-width: 900px) {
+          font-size: 0.85rem;
+        }
       }
 
       td {
@@ -117,19 +133,36 @@
         width: 30px;
         text-align: center;
         font-weight: bold;
+
+        @media (max-width: 900px) {
+          width: 25px;
+          font-size: 0.85rem;
+        }
       }
 
       .col-pass {
         width: 30px;
         text-align: center;
+
+        @media (max-width: 900px) {
+          width: 25px;
+        }
       }
 
       .col-score {
         width: 60px;
+
+        @media (max-width: 900px) {
+          width: 45px;
+        }
       }
 
       .col-answer {
         width: 250px;
+
+        @media (max-width: 900px) {
+          width: 150px;
+        }
       }
 
       input[type="text"] {
@@ -139,6 +172,11 @@
         border-radius: 4px;
         font-size: 14px;
         box-sizing: border-box;
+
+        @media (max-width: 900px) {
+          padding: 4px;
+          font-size: 12px;
+        }
       }
 
       input[type="number"] {
@@ -148,11 +186,21 @@
         border-radius: 4px;
         font-size: 14px;
         box-sizing: border-box;
+
+        @media (max-width: 900px) {
+          padding: 4px;
+          font-size: 12px;
+        }
       }
 
       input[type="checkbox"] {
         width: 20px;
         height: 20px;
+
+        @media (max-width: 900px) {
+          width: 16px;
+          height: 16px;
+        }
       }
     }
   }

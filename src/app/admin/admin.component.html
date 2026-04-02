@@ -10,7 +10,7 @@
     <button class="control-btn switch-btn" (click)="switch()">Switch</button>
   </div>
 
-  <div class="teams-container" [ngStyle]="reverse ? { 'flex-direction': 'row-reverse' } : {}">
+  <div class="teams-container" [class.reverse]="reverse">
     <app-team-admin
       team="left"
       [teamName]="leftTeam.teamName"
