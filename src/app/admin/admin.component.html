@@ -10,12 +10,37 @@
     <button class="control-btn switch-btn" (click)="switch()">Switch</button>
   </div>
 
+  <div class="answer-file-bar">
+    <div class="upload-section">
+      <input type="text" [(ngModel)]="newFileName" placeholder="File name" class="file-name-input" />
+      <input type="file" (change)="onFileSelected($event)" accept=".csv" class="file-input" />
+      <button class="control-btn upload-btn" (click)="uploadFile()">Upload</button>
+    </div>
+
+    <div class="select-section">
+      <label>Answers File:</label>
+      <select [(ngModel)]="selectedFileName" (ngModelChange)="onFileSelectionChange()" class="file-select">
+        <option value="">-- Select File --</option>
+        @for (file of answerFiles; track file.name) {
+          <option [value]="file.name">{{ file.name }}</option>
+        }
+      </select>
+    </div>
+
+    <button class="control-btn download-example-btn" (click)="downloadExample()">Download Example</button>
+
+    @if (uploadError) {
+      <div class="error-message">{{ uploadError }}</div>
+    }
+  </div>
+
   <div class="teams-container" [class.reverse]="reverse">
     <app-team-admin
       team="left"
       [teamName]="leftTeam.teamName"
       [points]="leftTeam.points"
       [scores]="leftTeam.scores"
+      [availableAnswers]="selectedAnswers"
       (teamChange)="updateLeftTeam($event)"
     ></app-team-admin>
 
@@ -24,6 +49,7 @@
       [teamName]="rightTeam.teamName"
       [points]="rightTeam.points"
       [scores]="rightTeam.scores"
+      [availableAnswers]="selectedAnswers"
       (teamChange)="updateRightTeam($event)"
     ></app-team-admin>
   </div>

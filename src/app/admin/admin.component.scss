@@ -103,6 +103,92 @@
   }
 }
 
+.answer-file-bar {
+  background-color: #2a2a2a;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  min-height: 50px;
+  border-bottom: 1px solid #444;
+
+  @media (max-width: 900px) {
+    gap: 12px;
+    padding: 10px 12px;
+  }
+}
+
+.upload-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .file-name-input {
+    padding: 6px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    width: 120px;
+  }
+
+  .file-input {
+    color: white;
+    font-size: 14px;
+  }
+}
+
+.select-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  label {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .file-select {
+    padding: 6px 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    min-width: 150px;
+    background-color: #444;
+    color: white;
+  }
+}
+
+.upload-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #45a049;
+  }
+}
+
+.download-example-btn {
+  background-color: #7AAF4C;
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+
+  &:hover {
+    background-color: #6A9F45;
+  }
+}
+
+.error-message {
+  color: #ff6b6b;
+  font-size: 14px;
+  padding: 6px 10px;
+  background-color: rgba(255, 107, 107, 0.1);
+  border-radius: 4px;
+}
+
 .teams-container {
   display: flex;
   gap: 20px;

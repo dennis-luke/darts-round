@@ -33,19 +33,32 @@
               />
             </td>
             <td class="col-answer">
-              <input
-                type="text"
-                [value]="score.answerText"
-                (input)="updateScore(i, 'answerText', $any($event.target).value)"
-              />
+              @if (isAnswerFileMode) {
+                <select [value]="score.answerText" (change)="onAnswerSelect(i, $any($event.target).value)">
+                  <option value="">-- Select Answer --</option>
+                  @for (answer of availableAnswers; track answer.answer) {
+                    <option [value]="answer.answer">{{ answer.answer }}</option>
+                  }
+                </select>
+              } @else {
+                <input
+                  type="text"
+                  [value]="score.answerText"
+                  (input)="updateScore(i, 'answerText', $any($event.target).value)"
+                />
+              }
             </td>
             <td class="col-score">
-              <input
-                type="number"
-                [value]="score.score"
-                (input)="updateScore(i, 'score', $any($event.target).value)"
-                placeholder="?"
-              />
+              @if (isAnswerFileMode) {
+                <span class="readonly-score">{{ score.score ?? '?' }}</span>
+              } @else {
+                <input
+                  type="number"
+                  [value]="score.score"
+                  (input)="updateScore(i, 'score', $any($event.target).value)"
+                  placeholder="?"
+                />
+              }
             </td>
           </tr>
         }
