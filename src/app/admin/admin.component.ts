@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TeamAdminComponent } from '../team-admin/team-admin.component';
@@ -25,6 +25,8 @@ export class AdminComponent {
   newFileName: string = '';
   uploadError: string = '';
   selectedAnswers: AnswerEntry[] = [];
+
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private scoreboardService: ScoreboardService,
@@ -140,9 +142,8 @@ export class AdminComponent {
       this.selectedFile = null;
 
       // Reset file input
-      const fileInput = document.querySelector('.file-input') as HTMLInputElement;
-      if (fileInput) {
-        fileInput.value = '';
+      if (this.fileInput) {
+        this.fileInput.nativeElement.value = '';
       }
     };
 
@@ -177,5 +178,16 @@ export class AdminComponent {
     a.download = 'example_answers.csv';
     a.click();
     window.URL.revokeObjectURL(url);
+  }
+
+  deleteSelectedFile() {
+    if (this.selectedFileName) {
+      this.answerFileService.deleteFile(this.selectedFileName);
+      this.loadAnswerFiles();
+      // If the deleted file was in use, reset the admin screen
+      this.selectedFileName = '';
+      this.selectedAnswers = [];
+      this.clearAllScores();
+    }
   }
 }

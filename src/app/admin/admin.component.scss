@@ -85,6 +85,16 @@
   }
 }
 
+.answer-file-bar .reset-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+
+  @media (max-width: 900px) {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+
 .hurry-up-btn {
   background-color: #AF4C7A;
   color: white;
@@ -115,7 +125,8 @@
 
   @media (max-width: 900px) {
     gap: 12px;
-    padding: 10px 12px;
+    padding: 8px 12px;
+    min-height: 45px;
   }
 }
 
@@ -132,9 +143,44 @@
     width: 120px;
   }
 
-  .file-input {
-    color: white;
+  .file-input-label {
+    padding: 8px 16px;
     font-size: 14px;
+    font-weight: bold;
+    background-color: #4C7AAF;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: #456EA0;
+    }
+
+    @media (max-width: 900px) {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    gap: 8px;
+
+    .file-name-input {
+      padding: 5px 8px;
+      font-size: 12px;
+      width: 80px;
+    }
+
+    .file-input-label {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
   }
 }
 
@@ -151,11 +197,25 @@
   .file-select {
     padding: 6px 10px;
     font-size: 14px;
-    border: none;
+    border: 1px solid #666;
     border-radius: 4px;
     min-width: 150px;
-    background-color: #444;
-    color: white;
+    background-color: white;
+    color: #1a1a1a;
+  }
+
+  @media (max-width: 900px) {
+    gap: 8px;
+
+    label {
+      font-size: 12px;
+    }
+
+    .file-select {
+      padding: 5px 8px;
+      font-size: 12px;
+      min-width: 100px;
+    }
   }
 }
 
@@ -164,20 +224,42 @@
   color: white;
   padding: 8px 16px;
   font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
 
   &:hover {
     background-color: #45a049;
   }
+
+  @media (max-width: 900px) {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
 }
 
-.download-example-btn {
-  background-color: #7AAF4C;
+.delete-btn {
+  background-color: #AF4C7A;
   color: white;
   padding: 8px 16px;
   font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
 
   &:hover {
-    background-color: #6A9F45;
+    background-color: #A0456E;
+  }
+
+  @media (max-width: 900px) {
+    padding: 6px 10px;
+    font-size: 12px;
   }
 }
 

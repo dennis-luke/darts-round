@@ -13,7 +13,10 @@
   <div class="answer-file-bar">
     <div class="upload-section">
       <input type="text" [(ngModel)]="newFileName" placeholder="File name" class="file-name-input" />
-      <input type="file" (change)="onFileSelected($event)" accept=".csv" class="file-input" />
+      <label class="file-input-label">
+        Choose File
+        <input type="file" #fileInput (change)="onFileSelected($event)" accept=".csv" class="file-input" />
+      </label>
       <button class="control-btn upload-btn" (click)="uploadFile()">Upload</button>
     </div>
 
@@ -25,9 +28,12 @@
           <option [value]="file.name">{{ file.name }}</option>
         }
       </select>
+      @if (selectedFileName) {
+        <button class="control-btn delete-btn" (click)="deleteSelectedFile()">Delete</button>
+      }
     </div>
 
-    <button class="control-btn download-example-btn" (click)="downloadExample()">Download Example</button>
+    <button class="control-btn reset-btn" (click)="downloadExample()">Download Example</button>
 
     @if (uploadError) {
       <div class="error-message">{{ uploadError }}</div>
