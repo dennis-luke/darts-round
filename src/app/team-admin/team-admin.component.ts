@@ -1,13 +1,14 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { Team, AnswerScore } from '../models';
 import { AnswerEntry } from '../services/answer-file.service';
 
 @Component({
   selector: 'app-team-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgSelectModule],
   templateUrl: './team-admin.component.html',
   styleUrl: './team-admin.component.scss'
 })
@@ -50,13 +51,13 @@ export class TeamAdminComponent {
     this.updateTeam();
   }
 
-  onAnswerSelect(index: number, answer: string) {
-    if (!answer) {
+  onAnswerChange(index: number, answerText: string) {
+    if (!answerText) {
       this.scores[index].answerText = '';
       this.scores[index].score = null;
     } else {
-      this.scores[index].answerText = answer;
-      const selectedAnswer = this.availableAnswers.find(a => a.answer === answer);
+      this.scores[index].answerText = answerText;
+      const selectedAnswer = this.availableAnswers.find(a => a.answer === answerText);
       if (selectedAnswer) {
         this.scores[index].score = selectedAnswer.score;
       }

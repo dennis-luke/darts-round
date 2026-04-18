@@ -46,12 +46,16 @@
             }
             <td class="col-answer">
               @if (isAnswerFileMode && !score.custom) {
-                <select [value]="score.answerText" (change)="onAnswerSelect(i, $any($event.target).value)">
-                  <option value="">-- Select Answer --</option>
-                  @for (answer of availableAnswers; track answer.answer) {
-                    <option [value]="answer.answer">{{ answer.answer }}</option>
-                  }
-                </select>
+                <ng-select
+                  class="answer-select"
+                  [items]="availableAnswers"
+                  bindLabel="answer"
+                  bindValue="answer"
+                  [(ngModel)]="score.answerText"
+                  (ngModelChange)="onAnswerChange(i, $event)"
+                  [searchable]="true"
+                  [clearable]="score.answerText ? true : false"
+                ></ng-select>
               } @else {
                 <input
                   type="text"
