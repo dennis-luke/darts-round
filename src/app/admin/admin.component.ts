@@ -170,7 +170,10 @@ export class AdminComponent {
   }
 
   downloadExample() {
-    const csvContent = 'Answer,Score\n\'Answer 1\',23\n\'Answer 2\',5\n\'Answer 3\',10';
+    const csvContent = `Answer,Score
+"Answer 1",23
+"Bob's favorite",5
+"Answer ""quoted""",10`;
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');

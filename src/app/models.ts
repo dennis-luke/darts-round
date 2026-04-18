@@ -2,6 +2,7 @@ export interface AnswerScore {
   pass: boolean;
   answerText: string;
   score: number | null;
+  custom?: boolean;
 }
 
 export interface Team {

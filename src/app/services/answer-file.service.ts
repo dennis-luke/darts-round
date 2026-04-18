@@ -64,14 +64,17 @@ export class AnswerFileService {
     for (let i = 1; i < lines.length; i++) {
       const line = lines[i];
 
-      // Handle CSV with or without quotes
-      const match = line.match(/^['"]?([^,'"]+)['"]?\s*,\s*['"]?([^,'"]+)['"]?$/);
-      if (!match) {
+      const { values, error: parseError } = this.parseCsvLine(line);
+      if (parseError) {
+        return { answers: [], error: `Invalid CSV format on line ${i + 1}: ${parseError}` };
+      }
+
+      if (values.length < 2) {
         return { answers: [], error: `Invalid CSV format on line ${i + 1}. Expected format: 'Answer', Score` };
       }
 
-      const answer = match[1].trim();
-      const scoreStr = match[2].trim();
+      const answer = values[0].trim();
+      const scoreStr = values[1].trim();
 
       if (!answer) {
         return { answers: [], error: `Empty answer on line ${i + 1}` };
@@ -95,5 +98,55 @@ export class AnswerFileService {
     }
 
     return { answers };
+  }
+
+  private parseCsvLine(line: string): { values: string[]; error?: string } {
+    const values: string[] = [];
+    let current = '';
+    let i = 0;
+    let quoteChar: string | null = null;
+
+    while (i < line.length) {
+      const char = line[i];
+
+      if (quoteChar) {
+        // Inside a quoted string
+        if (char === quoteChar) {
+          // Check for escaped quote (doubled quote)
+          if (i + 1 < line.length && line[i + 1] === quoteChar) {
+            current += quoteChar;
+            i += 2;
+          } else {
+            // End of quoted string
+            quoteChar = null;
+            i++;
+          }
+        } else {
+          current += char;
+          i++;
+        }
+      } else {
+        // Outside quoted string
+        if (char === '"' || char === "'") {
+          quoteChar = char;
+          i++;
+        } else if (char === ',') {
+          values.push(current);
+          current = '';
+          i++;
+        } else {
+          current += char;
+          i++;
+        }
+      }
+    }
+
+    // Push the last value
+    if (quoteChar) {
+      return { values: [], error: `Unclosed quote in: "${line}"` };
+    }
+    values.push(current);
+
+    return { values };
   }
 }

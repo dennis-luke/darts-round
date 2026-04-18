@@ -63,4 +63,12 @@ export class TeamAdminComponent {
     }
     this.updateTeam();
   }
+
+  onCustomToggle(index: number, isCustom: boolean) {
+    this.scores[index].custom = isCustom;
+    // Wipe answer text and score when toggling custom
+    this.scores[index].answerText = '';
+    this.scores[index].score = null;
+    this.updateTeam();
+  }
 }

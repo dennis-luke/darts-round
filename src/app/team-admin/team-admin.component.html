@@ -17,6 +17,9 @@
         <tr>
           <th class="row-num">#</th>
           <th class="col-pass">Pass</th>
+          @if (isAnswerFileMode) {
+            <th class="col-custom">Custom</th>
+          }
           <th class="col-answer">Answer Text</th>
           <th class="col-score">Points</th>
         </tr>
@@ -32,8 +35,17 @@
                 (change)="updateScore(i, 'pass', $any($event.target).checked)"
               />
             </td>
+            @if (isAnswerFileMode) {
+              <td class="col-custom">
+                <input
+                  type="checkbox"
+                  [checked]="score.custom"
+                  (change)="onCustomToggle(i, $any($event.target).checked)"
+                />
+              </td>
+            }
             <td class="col-answer">
-              @if (isAnswerFileMode) {
+              @if (isAnswerFileMode && !score.custom) {
                 <select [value]="score.answerText" (change)="onAnswerSelect(i, $any($event.target).value)">
                   <option value="">-- Select Answer --</option>
                   @for (answer of availableAnswers; track answer.answer) {
@@ -49,7 +61,7 @@
               }
             </td>
             <td class="col-score">
-              @if (isAnswerFileMode) {
+              @if (isAnswerFileMode && !score.custom) {
                 <span class="readonly-score">{{ score.score ?? '?' }}</span>
               } @else {
                 <input

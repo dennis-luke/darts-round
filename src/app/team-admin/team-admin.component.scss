@@ -149,6 +149,15 @@
         }
       }
 
+      .col-custom {
+        width: 50px;
+        text-align: center;
+
+        @media (max-width: 900px) {
+          width: 40px;
+        }
+      }
+
       .col-score {
         width: 60px;
 
